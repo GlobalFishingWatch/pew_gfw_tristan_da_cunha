@@ -1,0 +1,22 @@
+"0","```r
+# create a geometry object including the dimensions of the northern fishing area
+aoi_geom_n <- list(rbind(c(-20,-30), c(10,-30), c(10,-40), c(-20,-40), c(-20,-30))) %>% 
+  st_polygon() %>% 
+  st_sfc(crs = 4326)
+
+# convert this to a simple features dataframe with a single data column (id = \"north\")
+aoi_sf_n <- data.frame(id = \"north\") %>% 
+  st_sf(geometry = aoi_geom_n)
+
+# create a geometry object including the dimensions of the southern fishing area
+aoi_geom_s <- list(rbind(c(-20,-40), c(15,-40), c(15,-50), c(-20,-50), c(-20,-40))) %>% 
+  st_polygon() %>% 
+  st_sfc(crs = 4326)
+
+# convert this to a simple features dataframe with a single data column (id = \"south\")
+aoi_sf_s <- data.frame(id = \"south\") %>% 
+  st_sf(geometry = aoi_geom_s)
+
+# bind the two sf dataframes together
+aoi_sf <- rbind(aoi_sf_n, aoi_sf_n)
+```"

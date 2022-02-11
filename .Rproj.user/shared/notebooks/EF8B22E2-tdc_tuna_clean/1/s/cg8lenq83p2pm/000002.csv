@@ -1,0 +1,13 @@
+"0","```r
+# read in raster filenames
+file_names_sst <- list.files(path = \"data_production/data/rasters/aqua_modis_sst_float_tiff\", pattern = \"*.tiff\", full.names = TRUE)
+
+# load these files as a single multi-layer raster
+sst_rast <- terra::rast(file_names_sst) 
+
+# change the names of each raster layer to the year and month (format: YYYY-MM)
+names(sst_rast) <-  names(sst_rast) %>% str_sub(8, -7)
+
+# Replace outlier temperatures (>100Â°C) with NA
+sst_rast[sst_rast >= 100] <- NA
+```"

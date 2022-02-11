@@ -1,0 +1,4 @@
+"0","sst_summary <- sst_summary %>% "
+"0","  mutate(date = date %>% lubridate::ym(),"
+"0","         month = date %>% lubridate::month(),"
+"0","         year = date %>% lubridate::year())"

@@ -1,0 +1,6 @@
+"0","sbt_catch <- sbt_catch %>% "
+"0","  filter(year %>% between(2016, 2020),"
+"0","         lon %>% between(-20, 15),"
+"0","         lat %>% between(-50, -40)) %>% "
+"0","  mutate(date = str_c(year, month, sep = ""-"") %>% lubridate::ym(),"
+"0","         tonnes = tonnes %>% as.numeric())"

@@ -1,0 +1,4 @@
+"0","```r
+sst_summary %>% saveRDS(\"data_production/data/sst_summary_longliner_aoi_2016_2021.rds\")
+sst_summary <- read_rds(\"data_production/data/sst_summary_longliner_aoi_2016_2021.rds\")
+```"

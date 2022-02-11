@@ -1,0 +1,3 @@
+"0","```r
+vt_gridded <- read_rds(\"data_production/data/gridded-vessel-activity-2019-2021.rds\")
+```"

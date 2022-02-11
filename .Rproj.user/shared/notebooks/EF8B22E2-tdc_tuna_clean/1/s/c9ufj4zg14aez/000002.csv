@@ -1,0 +1,5 @@
+"0","```r
+ll_aoi <- fishwatchr::gfw_query(query = query_1,
+                            run_query = TRUE,
+                            con = con)$data
+```"

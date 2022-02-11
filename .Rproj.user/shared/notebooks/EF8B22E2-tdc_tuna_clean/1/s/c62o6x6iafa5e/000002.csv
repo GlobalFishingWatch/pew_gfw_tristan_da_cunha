@@ -1,0 +1,6 @@
+"0","```r
+(p_fv_n / p_fv_s) + 
+  plot_annotation(title = \"Number of longline vessels active per year\", 
+                  theme = theme_gfw_cian() + theme(plot.title = element_text(size = 16)))
+
+```"

@@ -1,0 +1,4 @@
+"0","```r
+saveRDS(ll_aoi, \"data_production/data/longliner_dist_2016_2021_aoi.rds\")
+ll_aoi <- read_rds(\"data_production/data/longliner_dist_2016_2021_aoi.rds\")
+```"

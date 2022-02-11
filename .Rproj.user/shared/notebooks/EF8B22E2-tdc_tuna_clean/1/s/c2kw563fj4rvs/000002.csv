@@ -1,0 +1,35 @@
+"0","```r
+# create a summary table of the top 2 most active flags
+# useful for plotting
+top_flag_s <- ll_aoi %>% 
+  filter(aoi == \"south\") %>% 
+  group_by(best_flag) %>% 
+  summarise(n_vessels = n_distinct(ssvid)) %>% 
+  mutate(prop = n_vessels/sum(n_vessels)) %>% 
+  top_n(2, wt = n_vessels) %>%
+  arrange(desc(n_vessels))
+
+# create a barplot of number of vessels per year, coloured by vessel flag
+# save as an object called p_fv_s
+p_fv_s <- ll_vessels_flag_by_year %>% 
+  filter(aoi == \"south\") %>% 
+  # if the flag is not one of the top 5 most active flags, label it as \"other\"
+  mutate(flag_alt = if_else(best_flag %in% top_flag_s$best_flag, best_flag, \"other\") %>% 
+           factor(levels = c(top_flag_s$best_flag, \"other\"))) %>% 
+  ggplot() +
+  geom_col(aes(x = year, y = n_vessels, fill = flag_alt)) +
+  scale_fill_manual(values = c(gfw_palette(\"chart\")[c(1,3)],\"grey50\"),
+                    name = \"Flag\") +
+  scale_x_continuous(breaks = c(2016, 2017, 2018, 2019, 2020, 2021)) +
+  labs(subtitle = \"South\",
+       x = \"Year\",
+       y = \"Active longliners\") + 
+  theme_gfw_cian() +
+  theme(axis.title = element_text(size = 14),
+        axis.text = element_text(size = 12),
+        plot.subtitle = element_text(size = 14),
+        legend.title = element_text(size = 16),
+        legend.text = element_text(size = 14),
+        strip.text = element_text(size = 16),
+        legend.position = \"right\")
+```"

@@ -1,0 +1,4 @@
+"0","```r
+# saveRDS(ll_ns, \"data_production/data/night_setting_locations_south_atlantic.rds\")
+ll_ns <- read_rds(\"data_production/data/night_setting_locations_south_atlantic.rds\")
+```"

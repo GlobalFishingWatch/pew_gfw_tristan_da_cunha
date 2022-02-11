@@ -1,0 +1,26 @@
+"0","```r
+ll_aoi %>% 
+  filter(aoi == \"north\",
+         best_flag == \"ESP\") %>% 
+  mutate(year = date %>% lubridate::year()) %>% 
+  group_by(year) %>% 
+  summarise(fishing_hours = sum(fishing_hours, na.rm = TRUE),
+            n_vessels = n_distinct(ssvid, na.rm = TRUE),
+            .groups = \"keep\") %>% 
+  ggplot() +
+  geom_col(aes(x = year, y = fishing_hours), fill = gfw_palette(\"chart\")[1]) +
+  labs(x = \"Year\",
+       y = \"Fishing hours\",
+       title = \"Fishing effort by Spanish-flagged longline vessels\",
+       subtitle = \"Northern fishing area\") + 
+  scale_x_continuous(n.breaks = 6) +
+  theme_gfw_cian() +
+  theme(axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14),
+        plot.title = element_text(size = 16),
+        plot.subtitle = element_text(size = 14),
+        legend.title = element_text(size = 14),
+        legend.text = element_text(size = 12),
+        strip.text = element_text(size = 16),
+        legend.position = \"bottom\")
+```"

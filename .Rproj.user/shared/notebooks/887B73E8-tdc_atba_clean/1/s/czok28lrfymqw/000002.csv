@@ -1,0 +1,5 @@
+"0","```r
+vt_atba_summary <- gfw_query(query = query_2,
+                             run_query = TRUE,
+                             con = con)$data
+```"

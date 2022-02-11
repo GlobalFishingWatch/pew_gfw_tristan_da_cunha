@@ -1,0 +1,33 @@
+"0","```r
+# north fishing area
+sst_north_summary <- sst_rast %>% 
+  terra::extract(vect(aoi_sf_n)) %>% # extract all sst values within north fishing area 
+  group_by(ID) %>% 
+  summarise(across(names(sst_rast), list(min = ~min(.x, na.rm = TRUE),  # summarise sst data
+                                              mean = ~mean(.x, na.rm = TRUE), 
+                                              sd = ~sd(.x, na.rm = TRUE),
+                                              max = ~max(.x, na.rm = TRUE)))) %>% 
+  pivot_longer(cols = -ID) %>% # the rest of the code reformats the data into our preferred structure
+  separate(name, into = c(\"date\", \"name\"), sep = \"_\") %>% 
+  pivot_wider(names_from = name,
+              values_from = value) %>% 
+  mutate(aoi = \"north\") %>% 
+  dplyr::select(date, aoi, min, mean, sd, max)
+
+# south fishing area
+sst_south_summary <- terra::extract(sst_rast, vect(aoi_sf_s)) %>% 
+  group_by(ID) %>% 
+  summarise(across(names(sst_rast), list(min = ~min(.x, na.rm = TRUE), 
+                                              mean = ~mean(.x, na.rm = TRUE), 
+                                              sd = ~sd(.x, na.rm = TRUE),
+                                              max = ~max(.x, na.rm = TRUE)))) %>% 
+  pivot_longer(cols = -ID) %>%
+  separate(name, into = c(\"date\", \"name\"), sep = \"_\") %>% 
+  pivot_wider(names_from = name,
+              values_from = value) %>% 
+  mutate(aoi = \"south\") %>% 
+  dplyr::select(date, aoi, min, mean, sd, max)
+
+# rbind both summary dataframes together
+sst_summary <- rbind(sst_north_summary, sst_south_summary)
+```"

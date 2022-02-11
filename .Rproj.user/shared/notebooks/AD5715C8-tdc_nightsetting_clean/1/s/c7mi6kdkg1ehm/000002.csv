@@ -1,0 +1,3 @@
+"0","dawn_times <- ll_ns_tdc %>% "
+"0","  summarise(start_ndawn = mean(start_ndawn)) %>% "
+"0","  mutate(start_ndawn = ymd_hms(""2020-01-01 00:00:00"") + (start_ndawn*60*60)) "
