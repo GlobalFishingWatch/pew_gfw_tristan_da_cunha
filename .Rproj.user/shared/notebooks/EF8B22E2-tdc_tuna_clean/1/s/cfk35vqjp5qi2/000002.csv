@@ -1,0 +1,7 @@
+"0","ll_vessels_flag_by_year <- ll_aoi %>% "
+"0","  # extract year from the date"
+"0","  mutate(year = date %>% lubridate::year()) %>% "
+"0","  group_by(year, best_flag, aoi) %>% "
+"0","  summarise(fishing_hours = sum(fishing_hours, na.rm = TRUE),"
+"0","            n_vessels = n_distinct(ssvid),"
+"0","            .groups = ""keep"")"

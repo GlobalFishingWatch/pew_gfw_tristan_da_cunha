@@ -1,9 +1,13 @@
 {
     "sortOrder": [
         {
+            "columnIndex": 4,
+            "ascending": false
+        },
+        {
             "columnIndex": 2,
             "ascending": true
         }
     ],
-    "path": "C:/Users/cianl/My Drive/projects/pew_gfw_tristan_da_cunha/data_production/data"
+    "path": "C:/Users/cianl/My Drive/projects/pew_gfw_tristan_da_cunha/analysis"
 }
