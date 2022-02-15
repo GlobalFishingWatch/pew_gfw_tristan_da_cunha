@@ -80,7 +80,7 @@ Load shapefiles for mapping:
 ```{r}
 # Areas to be Avoided (ATBA)
 atba_sf <- sf::st_read("geodata/tdc_atba/ATBA_consolidate_25nm_buffer_wgs84.shp")
-st_crs(atba_sf) <- 4326
+st_crs(atba_sf) <- 4326 # set coordinate reference system to WGS84
 
 # Shapefiles of Tristan da Cunha and Gough Island - sourced from OpenStreetMap
 tdc_sf <- sf::st_read("geodata/tdc_osm/tristan_da_cunha_archipelago_osm.shp")
