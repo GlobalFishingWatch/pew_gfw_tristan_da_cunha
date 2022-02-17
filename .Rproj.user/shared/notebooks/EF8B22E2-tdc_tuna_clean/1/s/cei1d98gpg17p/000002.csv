@@ -1,0 +1,8 @@
+"0","bsh_catch <- read.csv(""data_production/data/iccat_bsh_catch_atlantic_south_2010_2020.csv"")"
+"0",""
+"0","# reformat data into a more usable structure"
+"0","bsh_catch <- bsh_catch %>% "
+"0","  pivot_longer(cols = X2010:X2020,"
+"0","               names_to = ""year"","
+"0","               values_to = ""catch"") %>% "
+"0","  mutate(year = year %>% str_sub(start = 2) %>% as.numeric())"

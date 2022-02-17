@@ -1,0 +1,2 @@
+"0","# load catch data locally"
+"0","sbt_catch <- read.csv(""data_production/data/sbt_catch_ccsbt_1965_2020.csv"")"

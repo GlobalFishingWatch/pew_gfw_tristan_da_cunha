@@ -19,6 +19,7 @@ WITH
   FROM 
       `world-fishing-827.scratch_cian.tdc_vessel_traffic_atba_2019_2021`
   WHERE 
+  -- restrict to positions inside the ATBA and by vessels over 400 gross tonnes
       inside_atba = 1 AND 
       best_tonnage_gt >= 400)
 

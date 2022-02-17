@@ -23,7 +23,7 @@ WITH
     ----------------------------------------------------------------------------
     positions AS (
         SELECT 
-            ssvid,
+            ssvid, -- vessel id
             lat, 
             lon, 
             timestamp,

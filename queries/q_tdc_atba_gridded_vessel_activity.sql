@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------
 -- Query: Vessel activity near Tristan da Cunha
--- between Jan. 1 2019 and June 30 2021 
+-- between Jan. 1, 2019 and June 30, 2021 
 -- aggregated to 0.1° resolution
 --
 -- Author: Cian Luck
@@ -13,7 +13,7 @@ WITH
   ------------------------------------------------------------------------------
   traffic AS (
   SELECT
-    ssvid,
+    ssvid, -- vessel id
     /*
     Assign lat/lon bins at desired resolution (here 10th degree)
     FLOOR takes the smallest integer after converting to units of

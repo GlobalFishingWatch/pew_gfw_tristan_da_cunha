@@ -1,0 +1,6 @@
+"0","ll_sst_month <- merge(x = ll_monthly_summary, "
+"0","                      y = sst_summary %>% "
+"0","                        # rename columns to avoid confusion in combined dataframe"
+"0","                        dplyr::select(month = date, aoi, sst_min = min, sst_mean = mean, sst_sd = sd, sst_max = max), "
+"0","                      # merge by month and area of interest (aoi)"
+"0","                      by = c(""month"", ""aoi""), all.x = TRUE)"

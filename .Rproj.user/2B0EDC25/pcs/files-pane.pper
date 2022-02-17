@@ -6,8 +6,8 @@
         },
         {
             "columnIndex": 2,
-            "ascending": true
+            "ascending": false
         }
     ],
-    "path": "C:/Users/cianl/My Drive/projects/pew_gfw_tristan_da_cunha/analysis"
+    "path": "C:/Users/cianl/My Drive/projects/pew_gfw_tristan_da_cunha/queries"
 }

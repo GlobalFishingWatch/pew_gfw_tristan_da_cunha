@@ -16,10 +16,10 @@ WITH
       *,
       EXTRACT(date FROM timestamp) AS date,
       EXTRACT(month FROM timestamp) AS month,
-      -- EXTRACT(year FROM timestamp) AS year
   FROM 
       `world-fishing-827.scratch_cian.tdc_vessel_traffic_atba_2019_2021`
   WHERE 
+      -- restrict to positions inside the EEZ and by vessels over 400 gross tonnes
       inside_eez = 1 AND 
       best_tonnage_gt >= 400)
 

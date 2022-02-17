@@ -1,4 +1,0 @@
-"0","vt_gridded <- read_rds(""data_production/data/gridded-vessel-activity-2019-2021.rds"")"
-"2","Error in read_rds(""data_production/data/gridded-vessel-activity-2019-2021.rds"") : 
-  could not find function ""read_rds""
-"
