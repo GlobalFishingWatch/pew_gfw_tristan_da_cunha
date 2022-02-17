@@ -2,7 +2,7 @@
 
 Global Fishing Watch Marine Manager is a dynamic technology portal designed to make actionable information on human activity and environmental data available to managers of marine protected areas. In this report we aimed to demonstrate the utility of the marine manager portal by applying Global Fishing Watch data to management use-cases for Tristan da Cunha.
 
-## Instructions for Pew Data check:
+## Instructions for Pew Data Check:
 This github repository includes all annotated code used to generate the tables and figures included in the report. The repository is organised as follows:
 
 * analysis: annotated Rmarkdown notebooks which were used to create all R-generated figures and tables in the report.
