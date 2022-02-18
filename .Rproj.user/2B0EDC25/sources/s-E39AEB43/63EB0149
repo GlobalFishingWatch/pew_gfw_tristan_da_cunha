@@ -1,0 +1,29 @@
+{
+    "id": "63EB0149",
+    "path": "C:/Users/cianl/My Drive/projects/pew_gfw_tristan_da_cunha/analysis/tdc_tuna_clean.Rmd",
+    "project_path": "analysis/tdc_tuna_clean.Rmd",
+    "type": "r_markdown",
+    "hash": "586417678",
+    "contents": "",
+    "dirty": false,
+    "created": 1645122475353.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "chunk_output_type": "inline",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "cursorPosition": "556,0",
+        "scrollLine": "552",
+        "last_setup_crc32": "E39AEB439850a0f9"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1645176048,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1645176048060,
+    "read_only": false,
+    "read_only_alternatives": []
+}

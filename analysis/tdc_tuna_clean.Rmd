@@ -561,7 +561,7 @@ bsh_catch %>%
   ggplot() +
     geom_col(aes(x = year, y = catch), fill = gfw_palette("chart")[1]) +
     labs(x = "Year",
-         y = "BSH catch (tonnes)",
+         y = "BSH catch (tons)",
          title = "Blue shark (BSH) catch by Spanish-flagged longline vessels\nin the South Atlantic reported to ICCAT") + 
   theme_gfw_cian() +
   theme(axis.title = element_text(size = 14),
