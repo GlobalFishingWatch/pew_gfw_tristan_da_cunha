@@ -451,7 +451,7 @@ ll_ns_tdc %>%
                           labels = c("Start", "End")) +
     labs(x = "Time of day",
          y = "Proportion of sets",
-         title = "Time of setting and hauling of longlines",
+         title = "Time of setting of longlines",
          subtitle = "Southeast Atlantic") +
     theme_gfw_cian() +
     theme() +

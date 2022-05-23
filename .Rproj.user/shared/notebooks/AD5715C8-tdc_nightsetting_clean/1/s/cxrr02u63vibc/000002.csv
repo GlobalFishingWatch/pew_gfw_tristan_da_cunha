@@ -1,4 +1,2 @@
-"0","```r
-ll_ns <- ll_ns %>% 
-  mutate(cat3 = if_else(cat2 == 2 | cat2 == 5 | cat2 == 7, \"night\", \"day\"))
-```"
+"0","# ll_ns stands for longline night setting"
+"0","ll_ns <- read_rds(""data_production/data/night_setting_locations_south_atlantic.rds"")"
