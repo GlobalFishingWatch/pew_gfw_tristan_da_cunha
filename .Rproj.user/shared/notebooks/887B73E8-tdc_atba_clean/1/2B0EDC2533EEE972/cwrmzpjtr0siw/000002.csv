@@ -1,0 +1,3 @@
+"0","vt_transits <- vt_transits %>% "
+"0","  merge(vt_atba_sf %>% st_drop_geometry(),"
+"0","        by = ""row_id"", all.x = TRUE)"

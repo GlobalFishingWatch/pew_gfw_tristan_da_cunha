@@ -1,0 +1,20 @@
+"0","# minimum distance to shore for every transit passing through the atba"
+"0","transit_dist <- vt_transits %>% "
+"0","  # slowed_in_atba == FALSE key to eliminate non transits"
+"0","  filter(date >= ymd(""2020-04-01""),"
+"0","         !is.na(transit_id_atba), "
+"0","         inside_atba == TRUE, "
+"0","         slowed_in_atba == FALSE) %>% "
+"0","  group_by(transit_id_atba) %>% "
+"0","  summarise(min_dist_to_shore_km = min(dist_to_shore_km, na.rm = TRUE)) "
+"1","[1m[33mError[39m in [38;5;252m[38;5;251m[48;5;235m[38;5;251m[48;5;235m`filter()`[48;5;235m[38;5;251m[49m[38;5;252m[39m:[22m
+[38;5;252m[33m![38;5;252m Problem while computing `..4 = slowed_in_atba == FALSE`.[39m
+[1mCaused by error:[22m
+[33m![39m object 'slowed_in_atba' not found
+Backtrace:
+[90m 1. [39m... %>% ...
+[90m 5. [39m[1mdplyr[22m:::filter.data.frame(...)
+[90m 6. [39mdplyr:::filter_rows(.data, ..., caller_env = caller_env())
+[90m 7. [39mdplyr:::filter_eval(dots, mask = mask, error_call = error_call)
+[90m 9. [39mmask$eval_all_filter(dots, env_filter)
+"

@@ -1,0 +1,2 @@
+"0","vt_atba_sf$dist_to_shore_m <- st_distance(vt_atba_sf, tdc_sf) %>% "
+"0","  apply(1, min)"

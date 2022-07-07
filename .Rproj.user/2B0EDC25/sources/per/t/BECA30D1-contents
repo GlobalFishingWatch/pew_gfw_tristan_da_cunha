@@ -271,7 +271,7 @@ A `trip_id` is associated with all of the vessel locations between two **port vi
 This query pulls all positions from port-to-port trips that passed within the ATBA:
 
 ```{r}
-query_4 <- readr::read_file(str_c("queries", "q_tdc_atba_trips_through_atba_all_positions.sql", sep="/")) 
+query_4 <- readr::read_file(str_c("queries", "q_tdc_atba_trips_through_atba_all_positions_temp.sql", sep="/")) 
 ```
 
 Run the query:
@@ -772,6 +772,17 @@ vt_transits <- vt_transits %>%
   merge(vt_atba_sf %>% st_drop_geometry(),
         by = "row_id", all.x = TRUE)
 ```
+
+```{r}
+vt_transits %>% 
+  ggplot() +
+  geom_histogram(aes(x = dist_from_shor_m_bq), alpha = 0.4, fill = fishwatchr::gfw_palette("chart")[1]) +
+  geom_histogram(aes(x = dist_to_shore_m), alpha = 0.4, fill = fishwatchr::gfw_palette("chart")[4]) +
+  scale_x_continuous(limits = c(0, 10000)) +
+  theme_gfw_cian()
+```
+
+
 
 Converted distance from metres to kilometres and round to 2 decimal places:
 

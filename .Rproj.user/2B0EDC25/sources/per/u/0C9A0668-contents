@@ -1,0 +1,11 @@
+
+
+
+
+
+vt_transits %>% 
+  ggplot() +
+  geom_histogram(aes(x = dist_from_shor_m_bq), alpha = 0.4, fill = fishwatchr::gfw_palette("chart")[1]) +
+  geom_histogram(aes(x = dist_to_shore_m), alpha = 0.4, fill = fishwatchr::gfw_palette("chart")[4]) +
+  scale_x_continuous(limits = c(0, 10000)) +
+  theme_gfw_cian()
