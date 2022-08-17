@@ -1,2 +1,0 @@
-"0","# set working directory to parent folder"
-"0","knitr::opts_knit$set(root.dir = normalizePath("".."")) "

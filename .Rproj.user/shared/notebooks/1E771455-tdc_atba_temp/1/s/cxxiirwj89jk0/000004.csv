@@ -1,5 +1,0 @@
-"0","sailing_vessels <- vessels_by_n_transits %>% "
-"0","  unnest(shiptype) %>% "
-"0","  group_by(ssvid) %>% "
-"0","  top_n(1, wt = count) %>% "
-"0","  filter(value == ""Sailing"")"

@@ -1,3 +1,0 @@
-"0","```r
-vt_atba_summary <- read_rds(\"data_production/data/summary-vessel-traffic-atba-2019-2021.rds\")
-```"

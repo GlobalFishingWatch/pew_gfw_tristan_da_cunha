@@ -1,5 +1,0 @@
-"0","```r
-vt_gridded <- gfw_query(query = query_1,
-                             run_query = TRUE,
-                             con = con)$data
-```"

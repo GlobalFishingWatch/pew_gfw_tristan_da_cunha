@@ -888,7 +888,7 @@ transits_post_atba[1:10]
 Then we defined a query to identify the names and locations of ports visited before and after transiting through the ATBA:
 
 ```{r}
-query_7 <- readr::read_file(str_c("queries", "q_tdc_atba_ports_visited.sql", sep="/")) 
+query_7 <- readr::read_file(str_c("queries", "q_tdc_atba_ports_visited_exclude_singapore.sql", sep="/")) 
 ```
 
 Run query:

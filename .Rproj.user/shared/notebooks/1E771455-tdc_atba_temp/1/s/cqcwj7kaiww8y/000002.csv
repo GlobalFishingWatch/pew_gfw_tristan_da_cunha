@@ -1,4 +1,0 @@
-"0","vt_atba_tracks <- vt_atba_tracks %>% "
-"0","  mutate(inside_eez = inside_eez %>% as.logical(), # format TRUE/FALSE"
-"0","         inside_atba = inside_atba %>% as.logical(), # format as TRUE/FALSE"
-"0","         date = lubridate::date(timestamp)) # extract date"
