@@ -29,10 +29,10 @@
 -- Specify query parameters 
 ------------------------------------------------------------
 # voyages must end after this date
-CREATE TEMP FUNCTION start_timestamp() AS (TIMESTAMP('2019-01-01'));
+CREATE TEMP FUNCTION start_timestamp() AS (TIMESTAMP('2022-01-01'));
 
 # voyages must start before this date
-CREATE TEMP FUNCTION end_timestamp() AS (TIMESTAMP('2022-06-30'));
+CREATE TEMP FUNCTION end_timestamp() AS (TIMESTAMP('2022-01-30'));
 
 # port stops less this value (in hours) excluded and voyages merged
 CREATE TEMP FUNCTION min_port_stop() AS (CAST(3 AS INT64));
@@ -51,24 +51,25 @@ WITH
 -- Raw data from the voyage table, removing some known noise
 ------------------------------------------------------------
 trip_ids AS (
-SELECT *
-FROM (
-SELECT
-ssvid,
-trip_id,
-CAST(IF(trip_start < TIMESTAMP("1900-01-01"), NULL, trip_start) AS TIMESTAMP) AS trip_start,
-CAST(IF(trip_end > TIMESTAMP("2099-12-31"), NULL, trip_end) AS TIMESTAMP) AS trip_end,
-trip_start_anchorage_id, 
-trip_end_anchorage_id
-FROM (
-SELECT *
-FROM `world-fishing-827.pipe_production_v20201001.voyages`
--- FROM `world-fishing-827.gfw_research.voyages_no_overlapping_short_seg_v20200819`
-WHERE trip_start <= end_timestamp()
-AND trip_end >= start_timestamp()
-AND trip_start_anchorage_id != "10000001"
-AND trip_end_anchorage_id != "10000001" 
-AND trip_id IN ({transits_post_atba*})))
+  SELECT *
+  FROM (
+    SELECT
+      ssvid,
+      trip_id,
+      CAST(IF(trip_start < TIMESTAMP("1900-01-01"), NULL, trip_start) AS TIMESTAMP) AS trip_start,
+      CAST(IF(trip_end > TIMESTAMP("2099-12-31"), NULL, trip_end) AS TIMESTAMP) AS trip_end,
+      trip_start_anchorage_id, 
+      trip_end_anchorage_id
+    FROM (
+      SELECT *
+      FROM `world-fishing-827.pipe_production_v20201001.voyages`
+      WHERE trip_start <= end_timestamp()
+        AND trip_end >= start_timestamp()
+        AND trip_start_anchorage_id != "10000001"
+        AND trip_end_anchorage_id != "10000001" 
+        AND trip_id IN ({transits_post_atba*})
+        )
+        )
   ),
 ------------------------------------------------
 -- anchorage ids that represent the Singapore Strait
@@ -85,75 +86,78 @@ AND trip_id IN ({transits_post_atba*})))
 -----------------------------------------------------
   add_trip_start_end_iso3 AS (
     SELECT
-    ssvid,
-    trip_id,
-    trip_start,
-    trip_end,
-    trip_start_anchorage_id,
-    b.iso3 AS start_anchorage_iso3,
-    trip_end_anchorage_id,
-    c.iso3 AS end_anchorage_iso3,
-    TIMESTAMP_DIFF(trip_end, trip_start, SECOND) / 3600 AS trip_duration_hr
+      ssvid,
+      trip_id,
+      trip_start,
+      trip_end,
+      trip_start_anchorage_id,
+      b.iso3 AS start_anchorage_iso3,
+      trip_end_anchorage_id,
+      c.iso3 AS end_anchorage_iso3,
+      TIMESTAMP_DIFF(trip_end, trip_start, SECOND) / 3600 AS trip_duration_hr
     FROM trip_ids a
     LEFT JOIN `gfw_research.named_anchorages` b
-    ON a.trip_start_anchorage_id = b.s2id
+      ON a.trip_start_anchorage_id = b.s2id
     LEFT JOIN `gfw_research.named_anchorages` c
-    ON a.trip_end_anchorage_id = c.s2id
+      ON a.trip_end_anchorage_id = c.s2id
     GROUP BY 1,2,3,4,5,6,7,8,9
   ),
+  
 -------------------------------------------------------------------
 -- Mark whether start anchorage or end anchorage is in Panama canal
 -- This is to remove trips within Panama Canal
 -------------------------------------------------------------------
   is_end_port_singapore AS (
     SELECT
-    ssvid,
-    trip_id,
-    trip_start,
-    trip_end,
-    trip_start_anchorage_id ,
-    start_anchorage_iso3,
-    trip_end_anchorage_id,
-    end_anchorage_iso3,
-    IF (trip_end_anchorage_id IN (
-      SELECT anchorage_id FROM singapore_ids ),
-      TRUE, FALSE ) current_end_is_singapore,
-    IF (trip_start_anchorage_id IN (
-      SELECT anchorage_id FROM singapore_ids ),
-      TRUE, FALSE ) current_start_is_singapore,
+      ssvid,
+      trip_id,
+      trip_start,
+      trip_end,
+      trip_start_anchorage_id ,
+      start_anchorage_iso3,
+      trip_end_anchorage_id,
+      end_anchorage_iso3,
+      IF (trip_end_anchorage_id IN (
+        SELECT anchorage_id FROM singapore_ids ),
+        TRUE, FALSE ) current_end_is_singapore,
+      IF (trip_start_anchorage_id IN (
+        SELECT anchorage_id FROM singapore_ids ),
+        TRUE, FALSE ) current_start_is_singapore,
     FROM add_trip_start_end_iso3
   ),
+  
 ------------------------------------------------
 -- Add information about
 -- whether previous and next ports are in Panama
 ------------------------------------------------
   add_prev_next_port AS (
     SELECT
-    *,
-    IFNULL (
-      LAG (trip_start, 1) OVER (
+      *,
+      IFNULL (
+        LAG (trip_start, 1) OVER (
+          PARTITION BY ssvid
+          ORDER BY trip_start ASC ),
+        TIMESTAMP ("2000-01-01") ) AS prev_trip_start,
+      IFNULL (
+        LEAD (trip_end, 1) OVER (
+          PARTITION BY ssvid
+          ORDER BY trip_start ASC ),
+        TIMESTAMP ("2100-01-01") ) AS next_trip_end,
+      LAG (current_end_is_singapore, 1) OVER (
         PARTITION BY ssvid
-        ORDER BY trip_start ASC ),
-      TIMESTAMP ("2000-01-01") ) AS prev_trip_start,
-    IFNULL (
-      LEAD (trip_end, 1) OVER (
+        ORDER BY trip_start ASC ) AS prev_end_is_singapore,
+      LEAD (current_end_is_singapore, 1) OVER (
         PARTITION BY ssvid
-        ORDER BY trip_start ASC ),
-      TIMESTAMP ("2100-01-01") ) AS next_trip_end,
-    LAG (current_end_is_singapore, 1) OVER (
-      PARTITION BY ssvid
-      ORDER BY trip_start ASC ) AS prev_end_is_singapore,
-    LEAD (current_end_is_singapore, 1) OVER (
-      PARTITION BY ssvid
-      ORDER BY trip_start ASC ) AS next_end_is_singapore,
-    LAG (current_start_is_singapore, 1) OVER(
-      PARTITION BY ssvid
-      ORDER BY trip_start ASC ) AS prev_start_is_singapore,
-    LEAD (current_start_is_singapore, 1) OVER(
-      PARTITION BY ssvid
-      ORDER BY trip_start ASC ) AS next_start_is_singapore,
+        ORDER BY trip_start ASC ) AS next_end_is_singapore,
+      LAG (current_start_is_singapore, 1) OVER(
+        PARTITION BY ssvid
+        ORDER BY trip_start ASC ) AS prev_start_is_singapore,
+      LEAD (current_start_is_singapore, 1) OVER(
+        PARTITION BY ssvid
+        ORDER BY trip_start ASC ) AS next_start_is_singapore,
     FROM is_end_port_singapore
   ),
+  
 ---------------------------------------------------------------------------------
 -- Mark the start and end of the block. The start of the block is the anchorage
 -- just before Singapore, and the end of the block is the anchorage just after
@@ -163,11 +167,11 @@ AND trip_id IN ({transits_post_atba*})))
 ---------------------------------------------------------------------------------
   block_start_end AS (
     SELECT
-    *,
-    IF (current_start_is_singapore, NULL, trip_start) AS block_start,
-    IF (current_end_is_singapore, NULL, trip_end) AS block_end
-    --       IF (current_start_is_panama AND prev_end_is_panama, NULL, trip_start) AS block_start,
-    --       IF (current_end_is_panama AND next_start_is_panama, NULL, trip_end) AS block_end
+      *,
+      IF (current_start_is_singapore, NULL, trip_start) AS block_start,
+      IF (current_end_is_singapore, NULL, trip_end) AS block_end
+      --       IF (current_start_is_panama AND prev_end_is_panama, NULL, trip_start) AS block_start,
+      --       IF (current_end_is_panama AND next_start_is_panama, NULL, trip_end) AS block_end
     FROM add_prev_next_port
   ),
 
@@ -177,15 +181,15 @@ AND trip_id IN ({transits_post_atba*})))
 -------------------------------------------
   look_back_and_ahead AS (
     SELECT
-    * EXCEPT(block_start, block_end),
-    LAST_VALUE (block_start IGNORE NULLS) OVER (
-      PARTITION BY ssvid
-      ORDER BY trip_start
-      ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS block_start,
-    FIRST_VALUE (block_end IGNORE NULLS) OVER (
-      PARTITION BY ssvid
-      ORDER BY trip_start
-      ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS block_end
+      * EXCEPT(block_start, block_end),
+      LAST_VALUE (block_start IGNORE NULLS) OVER (
+        PARTITION BY ssvid
+        ORDER BY trip_start
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS block_start,
+      FIRST_VALUE (block_end IGNORE NULLS) OVER (
+        PARTITION BY ssvid
+        ORDER BY trip_start
+        ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS block_end
     FROM block_start_end
   ),
 
